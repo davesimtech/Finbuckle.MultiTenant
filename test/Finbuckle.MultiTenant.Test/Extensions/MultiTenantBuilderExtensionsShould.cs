@@ -13,6 +13,9 @@ namespace Finbuckle.MultiTenant.Test.Extensions
 {
     public class MultiTenantBuilderExtensionsShould
     {
+        private readonly Guid initechid = Guid.Parse("b2dd86f7-ced4-449f-a514-d216ef7172a8");
+        private readonly Guid lolid = Guid.Parse("0aeee0d0-aa7b-44a2-9314-1e18c05cba1b");
+        private readonly Guid lol = Guid.NewGuid();
         [Fact]
         public void AddDistributedCacheStoreDefault()
         {
@@ -82,14 +85,14 @@ namespace Finbuckle.MultiTenant.Test.Extensions
             Assert.IsType<ConfigurationStore<TenantInfo>>(store);
 
             var tc = store.TryGetByIdentifierAsync("initech").Result;
-            Assert.Equal("initech-id", tc!.Id);
+            Assert.Equal(initechid, tc!.Id);
             Assert.Equal("initech", tc.Identifier);
             Assert.Equal("Initech", tc.Name);
             // Note: connection string below loading from default in json.
             Assert.Equal("Datasource=sample.db", tc.ConnectionString);
 
             tc = store.TryGetByIdentifierAsync("lol").Result;
-            Assert.Equal("lol-id", tc!.Id);
+            Assert.Equal(lolid, tc!.Id);
             Assert.Equal("lol", tc.Identifier);
             Assert.Equal("LOL", tc.Name);
             Assert.Equal("Datasource=lol.db", tc.ConnectionString);
@@ -114,14 +117,14 @@ namespace Finbuckle.MultiTenant.Test.Extensions
             Assert.IsType<ConfigurationStore<TenantInfo>>(store);
 
             var tc = store.TryGetByIdentifierAsync("initech").Result;
-            Assert.Equal("initech-id", tc!.Id);
+            Assert.Equal(initechid, tc!.Id);
             Assert.Equal("initech", tc.Identifier);
             Assert.Equal("Initech", tc.Name);
             // Note: connection string below loading from default in json.
             Assert.Equal("Datasource=sample.db", tc.ConnectionString);
 
             tc = store.TryGetByIdentifierAsync("lol").Result;
-            Assert.Equal("lol-id", tc!.Id);
+            Assert.Equal(lolid, tc!.Id);
             Assert.Equal("lol", tc.Identifier);
             Assert.Equal("LOL", tc.Name);
             Assert.Equal("Datasource=lol.db", tc.ConnectionString);
@@ -144,7 +147,7 @@ namespace Finbuckle.MultiTenant.Test.Extensions
             builder.WithInMemoryStore(options =>
             {
                 options.IsCaseSensitive = true;
-                options.Tenants.Add(new TenantInfo{ Id = "lol", Identifier = "lol", Name = "LOL", ConnectionString = "Datasource=lol.db"});
+                options.Tenants.Add(new TenantInfo{ Id = lol, Identifier = "lol", Name = "LOL", ConnectionString = "Datasource=lol.db"});
             });
             var sp = services.BuildServiceProvider();
 
@@ -152,7 +155,7 @@ namespace Finbuckle.MultiTenant.Test.Extensions
             Assert.IsType<InMemoryStore<TenantInfo>>(store);
 
             var tc = store.TryGetByIdentifierAsync("lol").Result;
-            Assert.Equal("lol", tc!.Id);
+            Assert.Equal(lol, tc!.Id);
             Assert.Equal("lol", tc.Identifier);
             Assert.Equal("LOL", tc.Name);
             Assert.Equal("Datasource=lol.db", tc.ConnectionString);

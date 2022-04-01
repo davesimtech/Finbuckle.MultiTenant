@@ -41,7 +41,7 @@ namespace Finbuckle.MultiTenant.Stores
             throw new System.NotImplementedException();
         }
 
-        public Task<TTenantInfo?> TryGetAsync(string id)
+        public Task<TTenantInfo?> TryGetAsync(Guid id)
         {
             throw new System.NotImplementedException();
         }

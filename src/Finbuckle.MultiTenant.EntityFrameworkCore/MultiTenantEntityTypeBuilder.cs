@@ -1,6 +1,7 @@
 // Copyright Finbuckle LLC, Andrew White, and Contributors.
 // Refer to the solution LICENSE file for more inforation.
 
+using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -71,7 +72,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore
                 // Note 3.1/5.0 will not have TenantId in Properties, so we add it and set the foreign key.
                 // Note 6.0+ will generate a shadow property with the wrong name in the Properties, we will replace.
                 var props = fk.Properties.Where(p => !p.Name.EndsWith("TenantId")).Select(p => p.Name).Append("TenantId").ToArray();
-                fkEntityBuilder.Property<string>("TenantId");
+                fkEntityBuilder.Property<Guid>("TenantId");
                 fkEntityBuilder.HasOne(fk.PrincipalEntityType.ClrType, fk.DependentToPrincipal?.Name)
                                .WithMany(fk.PrincipalToDependent?.Name)
                                .HasForeignKey(props)

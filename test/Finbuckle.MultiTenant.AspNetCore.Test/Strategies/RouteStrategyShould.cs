@@ -16,11 +16,11 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test.Strategies
     public class RouteStrategyShould
     {
         [Theory]
-        [InlineData("/initech", "initech", "initech")]
-        [InlineData("/", "initech", "")]
-        public async Task ReturnExpectedIdentifier(string path, string identifier, string expected)
+        [InlineData("/initech", "1d350a71-1904-456d-b677-26da8e6b76e8", "initech", "1d350a71-1904-456d-b677-26da8e6b76e8")]
+        [InlineData("/", "1d350a71-1904-456d-b677-26da8e6b76e8", "initech", "")]
+        public async Task ReturnExpectedIdentifier(string path, string id, string identifier, string expected)
         {
-            IWebHostBuilder hostBuilder = GetTestHostBuilder(identifier, "{__tenant__=}");
+            IWebHostBuilder hostBuilder = GetTestHostBuilder(Guid.Parse(id), identifier, "{__tenant__=}");
 
             using (var server = new TestServer(hostBuilder))
             {
@@ -42,7 +42,7 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test.Strategies
         [Fact]
         public async Task ReturnNullIfNoRouteParamMatch()
         {
-            IWebHostBuilder hostBuilder = GetTestHostBuilder("test_tenant", "{controller}");
+            IWebHostBuilder hostBuilder = GetTestHostBuilder(Guid.NewGuid(), "test_tenant", "{controller}");
 
             using (var server = new TestServer(hostBuilder))
             {
@@ -61,7 +61,7 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test.Strategies
             Assert.Throws<ArgumentException>(() => new RouteStrategy(testString));
         }
 
-        private static IWebHostBuilder GetTestHostBuilder(string identifier, string routePattern)
+        private static IWebHostBuilder GetTestHostBuilder(Guid id, string identifier, string routePattern)
         {
             return new WebHostBuilder()
                 .ConfigureServices(services =>
@@ -79,13 +79,13 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test.Strategies
                         {
                             if (context.GetMultiTenantContext<TenantInfo>()?.TenantInfo != null)
                             {
-                                await context.Response.WriteAsync(context.GetMultiTenantContext<TenantInfo>()!.TenantInfo!.Id!);
+                                await context.Response.WriteAsync(context.GetMultiTenantContext<TenantInfo>()!.TenantInfo!.Id!.ToString());
                             }
                         });
                     });
 
                     var store = app.ApplicationServices.GetRequiredService<IMultiTenantStore<TenantInfo>>();
-                    store.TryAddAsync(new TenantInfo { Id = identifier, Identifier = identifier }).Wait();
+                    store.TryAddAsync(new TenantInfo { Id = id, Identifier = identifier }).Wait();
                 });
         }
     }

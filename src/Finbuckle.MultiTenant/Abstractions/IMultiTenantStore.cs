@@ -1,6 +1,7 @@
 // Copyright Finbuckle LLC, Andrew White, and Contributors.
 // Refer to the solution LICENSE file for more inforation.
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -44,7 +45,7 @@ namespace Finbuckle.MultiTenant
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<TTenantInfo?> TryGetAsync(string id);
+        Task<TTenantInfo?> TryGetAsync(Guid id);
 
 
         /// <summary>

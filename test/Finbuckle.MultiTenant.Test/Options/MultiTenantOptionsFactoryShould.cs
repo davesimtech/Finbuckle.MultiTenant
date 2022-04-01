@@ -1,6 +1,7 @@
 // Copyright Finbuckle LLC, Andrew White, and Contributors.
 // Refer to the solution LICENSE file for more inforation.
 
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Xunit;
@@ -9,6 +10,9 @@ namespace Finbuckle.MultiTenant.Test.Options
 {
     public class MultiTenantOptionsFactoryShould
     {
+        private readonly Guid id = Guid.NewGuid();
+        private readonly Guid testid = Guid.NewGuid();
+        
         [Theory]
         [InlineData("")]
         [InlineData(null)]
@@ -24,7 +28,7 @@ namespace Finbuckle.MultiTenant.Test.Options
             var sp = services.BuildServiceProvider();
             var accessor = sp.GetRequiredService<IMultiTenantContextAccessor<TenantInfo>>();
             accessor.MultiTenantContext = new MultiTenantContext<TenantInfo>
-                { TenantInfo = new TenantInfo { Id = "test-id-123" } };
+                { TenantInfo = new TenantInfo { Id = testid } };
 
             var options = sp.GetRequiredService<IOptionsSnapshot<TestOptions>>().Get(name);
             Assert.Equal($"{name}_begin_{accessor.MultiTenantContext.TenantInfo!.Id}_end",
@@ -47,7 +51,7 @@ namespace Finbuckle.MultiTenant.Test.Options
             var sp = services.BuildServiceProvider();
             var accessor = sp.GetRequiredService<IMultiTenantContextAccessor<TenantInfo>>();
             accessor.MultiTenantContext = new MultiTenantContext<TenantInfo>
-                { TenantInfo = new TenantInfo { Id = "id", Identifier = "identifier" } };
+                { TenantInfo = new TenantInfo { Id = id, Identifier = "identifier" } };
 
             var options = sp.GetRequiredService<IOptionsSnapshot<TestOptions>>().Get(name);
             Assert.Equal(
@@ -78,7 +82,7 @@ namespace Finbuckle.MultiTenant.Test.Options
             var sp = services.BuildServiceProvider();
             var accessor = sp.GetRequiredService<IMultiTenantContextAccessor<TenantInfo>>();
             accessor.MultiTenantContext = new MultiTenantContext<TenantInfo>
-                { TenantInfo = new TenantInfo { Id = "id", Identifier = "identifier" } };
+                { TenantInfo = new TenantInfo { Id = id, Identifier = "identifier" } };
 
             var options1 = sp.GetRequiredService<IOptionsSnapshot<TestOptions>>().Get(name1);
             var expectedName1 = !string.IsNullOrEmpty(name1) ? name1 : Microsoft.Extensions.Options.Options.DefaultName;
@@ -137,7 +141,7 @@ namespace Finbuckle.MultiTenant.Test.Options
             var sp = services.BuildServiceProvider();
             var accessor = sp.GetRequiredService<IMultiTenantContextAccessor<TenantInfo>>();
             accessor.MultiTenantContext = new MultiTenantContext<TenantInfo>
-                { TenantInfo = new TenantInfo { Id = "id", Identifier = "identifier" } };
+                { TenantInfo = new TenantInfo { Id = id, Identifier = "identifier" } };
 
             Assert.Throws<OptionsValidationException>(
                 () => sp.GetRequiredService<IOptionsSnapshot<TestOptions>>().Value);
@@ -155,7 +159,7 @@ namespace Finbuckle.MultiTenant.Test.Options
             var sp = services.BuildServiceProvider();
             var accessor = sp.GetRequiredService<IMultiTenantContextAccessor<TenantInfo>>();
             accessor.MultiTenantContext = new MultiTenantContext<TenantInfo>
-                { TenantInfo = new TenantInfo { Id = "id", Identifier = "identifier" } };
+                { TenantInfo = new TenantInfo { Id = id, Identifier = "identifier" } };
             
             Assert.Throws<OptionsValidationException>(
                 () => sp.GetRequiredService<IOptionsSnapshot<TestOptions>>().Get("a name"));

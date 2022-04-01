@@ -20,7 +20,7 @@ namespace Finbuckle.MultiTenant.Options
         //private readonly ConcurrentDictionary<string, ConcurrentDictionary<string, object>> _adjustedOptionsNames =
         //  new ConcurrentDictionary<string, ConcurrentDictionary<string, object>>();
 
-        private readonly ConcurrentDictionary<string, IOptionsMonitorCache<TOptions>> map = new ConcurrentDictionary<string, IOptionsMonitorCache<TOptions>>();
+        private readonly ConcurrentDictionary<Guid, IOptionsMonitorCache<TOptions>> map = new ConcurrentDictionary<Guid, IOptionsMonitorCache<TOptions>>();
 
         public MultiTenantOptionsCache(IMultiTenantContextAccessor<TTenantInfo> multiTenantContextAccessor)
         {
@@ -32,7 +32,7 @@ namespace Finbuckle.MultiTenant.Options
         /// </summary>
         public void Clear()
         {
-            var tenantId = multiTenantContextAccessor.MultiTenantContext?.TenantInfo?.Id ?? "";
+            var tenantId = multiTenantContextAccessor.MultiTenantContext?.TenantInfo?.Id ?? Guid.Empty;
             var cache = map.GetOrAdd(tenantId, new OptionsCache<TOptions>());
 
             cache.Clear();
@@ -42,10 +42,10 @@ namespace Finbuckle.MultiTenant.Options
         /// Clears all cached options for the given tenant.
         /// </summary>
         /// <param name="tenantId">The Id of the tenant which will have its options cleared.</param>
-        public void Clear(string tenantId)
+        public void Clear(Guid tenantId)
         {
-            tenantId = tenantId ?? "";
-            var cache = map.GetOrAdd(tenantId, new OptionsCache<TOptions>());
+            var id = tenantId != Guid.Empty ? tenantId : Guid.Empty;
+            var cache = map.GetOrAdd(id, new OptionsCache<TOptions>());
 
             cache.Clear();
         }
@@ -73,7 +73,7 @@ namespace Finbuckle.MultiTenant.Options
             }
 
             name = name ?? Microsoft.Extensions.Options.Options.DefaultName;
-            var tenantId = multiTenantContextAccessor.MultiTenantContext?.TenantInfo?.Id ?? "";
+            var tenantId = multiTenantContextAccessor.MultiTenantContext?.TenantInfo?.Id ?? Guid.Empty;
             var cache = map.GetOrAdd(tenantId, new OptionsCache<TOptions>());
 
             return cache.GetOrAdd(name, createOptions);
@@ -88,7 +88,7 @@ namespace Finbuckle.MultiTenant.Options
         public bool TryAdd(string name, TOptions options)
         {
             name = name ?? Microsoft.Extensions.Options.Options.DefaultName;
-            var tenantId = multiTenantContextAccessor.MultiTenantContext?.TenantInfo?.Id ?? "";
+            var tenantId = multiTenantContextAccessor.MultiTenantContext?.TenantInfo?.Id ?? Guid.Empty;
             var cache = map.GetOrAdd(tenantId, new OptionsCache<TOptions>());
 
             return cache.TryAdd(name, options);
@@ -102,7 +102,7 @@ namespace Finbuckle.MultiTenant.Options
         public bool TryRemove(string name)
         {
             name = name ?? Microsoft.Extensions.Options.Options.DefaultName;
-            var tenantId = multiTenantContextAccessor.MultiTenantContext?.TenantInfo?.Id ?? "";
+            var tenantId = multiTenantContextAccessor.MultiTenantContext?.TenantInfo?.Id ?? Guid.Empty;
             var cache = map.GetOrAdd(tenantId, new OptionsCache<TOptions>());
 
             return cache.TryRemove(name);

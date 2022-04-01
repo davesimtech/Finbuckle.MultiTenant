@@ -1,6 +1,7 @@
 // Copyright Finbuckle LLC, Andrew White, and Contributors.
 // Refer to the solution LICENSE file for more inforation.
 
+using System;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
@@ -8,12 +9,14 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.MultiTenantDbContext
 {
     public class MultiTenantDbContextShould
     {
+        private readonly Guid abc = Guid.NewGuid();
+        
         [Fact]
         public void WorkWithSingleParamCtor()
         {
             var tenant1 = new TenantInfo
             {
-                Id = "abc",
+                Id = abc,
                 Identifier = "abc",
                 Name = "abc",
                 ConnectionString = "DataSource=testdb.db"
@@ -28,7 +31,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.MultiTenantDbContext
         {
             var tenant1 = new TenantInfo
             {
-                Id = "abc",
+                Id = abc,
                 Identifier = "abc",
                 Name = "abc",
                 ConnectionString = "DataSource=testdb.db"

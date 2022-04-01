@@ -13,13 +13,16 @@ namespace Finbuckle.MultiTenant.Test.Options
 {
     public class MultiTenantOptionsCacheShould
     {
+        private Guid _tenantId = Guid.Parse("c0ae0ac2-5407-462b-8536-96f6f87dbbc8");
+        private Guid _diffTenantId = Guid.Parse("1d350a71-1904-456d-b677-26da8e6b76e8");
+        
         [Theory]
         [InlineData("")]
         [InlineData(null)]
         [InlineData("name")]
         public void AddNamedOptionsForCurrentTenantOnlyOnAdd(string name)
         {
-            var ti = new TenantInfo { Id = "test-id-123" };
+            var ti = new TenantInfo { Id = _tenantId };
             var tc = new MultiTenantContext<TenantInfo>();
             tc.TenantInfo = ti;
             var tca = new MultiTenantContextAccessor<TenantInfo>();
@@ -37,7 +40,7 @@ namespace Finbuckle.MultiTenant.Test.Options
             Assert.False(result);
 
             // Change the tenant id and confirm options can be added again.
-            ti.Id = "diff_id";
+            ti.Id = _diffTenantId;
             result = cache.TryAdd(name, options);
             Assert.True(result);
         }
@@ -74,7 +77,7 @@ namespace Finbuckle.MultiTenant.Test.Options
         [InlineData("name")]
         public void GetOrAddNamedOptionForCurrentTenantOnly(string name)
         {
-            var ti = new TenantInfo { Id = "test-id-123"};
+            var ti = new TenantInfo { Id = _tenantId};
             var tc = new MultiTenantContext<TenantInfo>();
             tc.TenantInfo = ti;
             var tca = new MultiTenantContextAccessor<TenantInfo>();
@@ -93,7 +96,7 @@ namespace Finbuckle.MultiTenant.Test.Options
             Assert.NotSame(options2, result);
 
             // Confirm different tenant on same object is an add (ie it didn't exist there).
-            ti.Id = "diff_id";
+            ti.Id = _diffTenantId;
             result = cache.GetOrAdd(name, () => options2);
             Assert.Same(options2, result);
         }
@@ -125,7 +128,7 @@ namespace Finbuckle.MultiTenant.Test.Options
         [InlineData("name")]
         public void RemoveNamedOptionsForCurrentTenantOnly(string name)
         {
-            var ti = new TenantInfo { Id = "test-id-123" };
+            var ti = new TenantInfo { Id = _tenantId };
             var tc = new MultiTenantContext<TenantInfo>();
             tc.TenantInfo = ti;
             var tca = new MultiTenantContextAccessor<TenantInfo>();
@@ -139,7 +142,7 @@ namespace Finbuckle.MultiTenant.Test.Options
             Assert.True(result);
 
             // Add under a different tenant.
-            ti.Id = "diff_id";
+            ti.Id = _diffTenantId;
             result = cache.TryAdd(name, options);
             Assert.True(result);
             result = cache.TryAdd("diffname", options);
@@ -148,7 +151,7 @@ namespace Finbuckle.MultiTenant.Test.Options
             // Remove named options for current tenant.
             result = cache.TryRemove(name);
             Assert.True(result);
-            var tenantCache = (ConcurrentDictionary<string, IOptionsMonitorCache<TestOptions>>?)cache.GetType().
+            var tenantCache = (ConcurrentDictionary<Guid, IOptionsMonitorCache<TestOptions>>?)cache.GetType().
                 GetField("map", BindingFlags.NonPublic | BindingFlags.Instance)?.
                 GetValue(cache);
 
@@ -160,7 +163,7 @@ namespace Finbuckle.MultiTenant.Test.Options
             Assert.True(tenantInternalCache.Keys.Contains("diffname"));
 
             // Assert other tenant not affected.
-            ti.Id = "test-id-123";
+            ti.Id = _tenantId;
             tenantInternalCache = tenantCache?[ti.Id].GetType().GetField("_cache", BindingFlags.NonPublic | BindingFlags.Instance)?
                 .GetValue(tenantCache[ti.Id]);
             Assert.True(tenantInternalCache!.ContainsKey(name ?? ""));
@@ -169,7 +172,7 @@ namespace Finbuckle.MultiTenant.Test.Options
         [Fact]
         public void ClearOptionsForCurrentTenantOnly()
         {
-            var ti = new TenantInfo { Id = "test-id-123" };
+            var ti = new TenantInfo { Id = _tenantId };
             var tc = new MultiTenantContext<TenantInfo>();
             tc.TenantInfo = ti;
             var tca = new MultiTenantContextAccessor<TenantInfo>();
@@ -183,16 +186,16 @@ namespace Finbuckle.MultiTenant.Test.Options
             Assert.True(result);
 
             // Add under a different tenant.
-            ti.Id = "diff_id";
+            ti.Id = _diffTenantId;
             result = cache.TryAdd("", options);
             Assert.True(result);
 
             // Clear options on first tenant.
-            ti.Id = "test-id-123";
+            ti.Id = _tenantId;
             cache.Clear();
 
             // Assert options cleared on this tenant.
-            var tenantCache = (ConcurrentDictionary<string, IOptionsMonitorCache<TestOptions>>?)cache.GetType().
+            var tenantCache = (ConcurrentDictionary<Guid, IOptionsMonitorCache<TestOptions>>?)cache.GetType().
                 GetField("map", BindingFlags.NonPublic | BindingFlags.Instance)?.
                 GetValue(cache);
 
@@ -201,7 +204,7 @@ namespace Finbuckle.MultiTenant.Test.Options
             Assert.True(tenantInternalCache!.IsEmpty);
 
             // Assert options still exist on other tenant.
-            ti.Id = "diff_id";
+            ti.Id = _diffTenantId;
             tenantInternalCache = tenantCache?[ti.Id].GetType().GetField("_cache", BindingFlags.NonPublic | BindingFlags.Instance)?
                 .GetValue(tenantCache[ti.Id]);
             Assert.False(tenantInternalCache!.IsEmpty);
@@ -210,7 +213,7 @@ namespace Finbuckle.MultiTenant.Test.Options
         [Fact]
         public void ClearOptionsForTenantIdOnly()
         {
-            var ti = new TenantInfo { Id = "test-id-123" };
+            var ti = new TenantInfo { Id = _tenantId };
             var tc = new MultiTenantContext<TenantInfo>();
             tc.TenantInfo = ti;
             var tca = new MultiTenantContextAccessor<TenantInfo>();
@@ -224,32 +227,32 @@ namespace Finbuckle.MultiTenant.Test.Options
             Assert.True(result);
 
             // Add under a different tenant.
-            ti.Id = "diff_id";
+            ti.Id = _diffTenantId;
             result = cache.TryAdd("", options);
             Assert.True(result);
 
             // Clear options on first tenant.
-            cache.Clear("test-id-123");
+            cache.Clear(_tenantId);
 
             // Assert options cleared on this tenant.
-            var tenantCache = (ConcurrentDictionary<string, IOptionsMonitorCache<TestOptions>>?)cache.GetType().
+            var tenantCache = (ConcurrentDictionary<Guid, IOptionsMonitorCache<TestOptions>>?)cache.GetType().
                 GetField("map", BindingFlags.NonPublic | BindingFlags.Instance)?.
                 GetValue(cache);
 
             dynamic? tenantInternalCache = tenantCache?[ti.Id].GetType().GetField("_cache", BindingFlags.NonPublic | BindingFlags.Instance)?
-                .GetValue(tenantCache["test-id-123"]);
+                .GetValue(tenantCache[_tenantId]);
             Assert.True(tenantInternalCache!.IsEmpty);
 
             // Assert options still exist on other tenant.
-            tenantInternalCache = tenantCache?["diff_id"].GetType().GetField("_cache", BindingFlags.NonPublic | BindingFlags.Instance)?
-                .GetValue(tenantCache["diff_id"]);
+            tenantInternalCache = tenantCache?[_diffTenantId].GetType().GetField("_cache", BindingFlags.NonPublic | BindingFlags.Instance)?
+                .GetValue(tenantCache[_diffTenantId]);
             Assert.False(tenantInternalCache!.IsEmpty);
         }
 
         [Fact]
         public void ClearAllOptionsForClearAll()
         {
-            var ti = new TenantInfo { Id = "test-id-123" };
+            var ti = new TenantInfo { Id = _tenantId };
             var tc = new MultiTenantContext<TenantInfo>();
             tc.TenantInfo = ti;
             var tca = new MultiTenantContextAccessor<TenantInfo>();
@@ -263,7 +266,7 @@ namespace Finbuckle.MultiTenant.Test.Options
             Assert.True(result);
 
             // Add under a different tenant.
-            ti.Id = "diff_id";
+            ti.Id = _diffTenantId;
             result = cache.TryAdd("", options);
             Assert.True(result);
 
@@ -271,7 +274,7 @@ namespace Finbuckle.MultiTenant.Test.Options
             cache.ClearAll();
 
             // Assert options cleared on this tenant.
-            var tenantCache = (ConcurrentDictionary<string, IOptionsMonitorCache<TestOptions>>?)cache.GetType().
+            var tenantCache = (ConcurrentDictionary<Guid, IOptionsMonitorCache<TestOptions>>?)cache.GetType().
                 GetField("map", BindingFlags.NonPublic | BindingFlags.Instance)?.
                 GetValue(cache);
 
@@ -280,7 +283,7 @@ namespace Finbuckle.MultiTenant.Test.Options
             Assert.True(tenantInternalCache!.IsEmpty);
 
             // Assert options cleared on other tenant.
-            ti.Id = "diff_id";
+            ti.Id = _diffTenantId;
             tenantInternalCache = tenantCache?[ti.Id].GetType().GetField("_cache", BindingFlags.NonPublic | BindingFlags.Instance)?
                 .GetValue(tenantCache[ti.Id]);
             Assert.True(tenantInternalCache!.IsEmpty);

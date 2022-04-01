@@ -13,6 +13,7 @@ namespace Finbuckle.MultiTenant.Test.Stores
 {
     public class DistributedCacheStoreShould : MultiTenantStoreTestBase
     {
+        private readonly Guid lolId = Guid.Parse("0aeee0d0-aa7b-44a2-9314-1e18c05cba1b");
         [Fact]
         public void ThrownOnGetAllTenantsFromStoreAsync()
         {
@@ -28,7 +29,7 @@ namespace Finbuckle.MultiTenant.Test.Stores
             var r = store.TryRemoveAsync("lol").Result;
             Assert.True(r);
 
-            var t1 = store.TryGetAsync("lol-id").Result;
+            var t1 = store.TryGetAsync(lolId).Result;
             var t2 = store.TryGetByIdentifierAsync("lol").Result;
 
             Assert.Null(t1);
@@ -50,13 +51,13 @@ namespace Finbuckle.MultiTenant.Test.Stores
         {
             var store = CreateTestStore();
 
-            var t1 = store.TryGetAsync("lol-id").Result;
+            var t1 = store.TryGetAsync(lolId).Result;
             var t2 = store.TryGetByIdentifierAsync("lol").Result;
 
             Assert.NotNull(t1);
             Assert.NotNull(t2);
-            Assert.Equal("lol-id", t1!.Id);
-            Assert.Equal("lol-id", t2!.Id);
+            Assert.Equal(lolId, t1!.Id);
+            Assert.Equal(lolId, t2!.Id);
             Assert.Equal("lol", t1.Identifier);
             Assert.Equal("lol", t2.Identifier);
         }
@@ -66,14 +67,14 @@ namespace Finbuckle.MultiTenant.Test.Stores
         {
             var store = CreateTestStore();
             Thread.Sleep(2000);
-            var t1 = store.TryGetAsync("lol-id").Result;
+            var t1 = store.TryGetAsync(lolId).Result;
             Thread.Sleep(2000);
             var t2 = store.TryGetByIdentifierAsync("lol").Result;
 
             Assert.NotNull(t1);
             Assert.NotNull(t2);
-            Assert.Equal("lol-id", t1!.Id);
-            Assert.Equal("lol-id", t2!.Id);
+            Assert.Equal(lolId, t1!.Id);
+            Assert.Equal(lolId, t2!.Id);
             Assert.Equal("lol", t1.Identifier);
             Assert.Equal("lol", t2.Identifier);
         }
@@ -83,7 +84,7 @@ namespace Finbuckle.MultiTenant.Test.Stores
         {
             var store = CreateTestStore();
             Thread.Sleep(3100);
-            var t1 = store.TryGetAsync("lol-id").Result;
+            var t1 = store.TryGetAsync(lolId).Result;
             var t2 = store.TryGetByIdentifierAsync("lol").Result;
 
             Assert.Null(t1);

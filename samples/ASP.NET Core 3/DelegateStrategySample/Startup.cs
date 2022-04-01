@@ -30,7 +30,7 @@ namespace DelegateStrategySample
                 WithDelegateStrategy(async context =>
                 {
                     ((HttpContext)context).Request.Query.TryGetValue("tenant", out StringValues tenantId);
-                    return await Task.FromResult(tenantId.ToString()); // ignore await warning or use await Task.FromResult(...)
+                    return await Task.FromResult(tenantId); // ignore await warning or use await Task.FromResult(...)
                 });
         }
 

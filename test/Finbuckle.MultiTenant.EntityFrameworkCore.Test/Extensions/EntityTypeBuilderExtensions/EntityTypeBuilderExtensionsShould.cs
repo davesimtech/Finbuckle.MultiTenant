@@ -15,6 +15,8 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.EntityTypeBu
 {
     public class EntityTypeBuilderExtensionsShould : IDisposable
     {
+        private readonly Guid abc = Guid.NewGuid();
+        private readonly Guid abc2 = Guid.NewGuid();
         private readonly SqliteConnection _connection;
 
         public EntityTypeBuilderExtensionsShould()
@@ -53,7 +55,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.EntityTypeBu
             using var db = GetDbContext();
             var prop = db.Model.FindEntityType(typeof(MyMultiTenantThing))?.FindProperty("TenantId");
 
-            Assert.Equal(typeof(string), prop?.ClrType);
+            Assert.Equal(typeof(Guid), prop?.ClrType);
             Assert.True(prop?.IsShadowProperty());
             Assert.Null(prop?.FieldInfo);
         }
@@ -64,7 +66,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.EntityTypeBu
             using var db = GetDbContext();
             var prop = db.Model.FindEntityType(typeof(MyThingWithTenantId))?.FindProperty("TenantId");
 
-            Assert.Equal(typeof(string), prop!.ClrType);
+            Assert.Equal(typeof(Guid), prop!.ClrType);
             Assert.False(prop.IsShadowProperty());
             Assert.NotNull(prop.FieldInfo);
         }
@@ -77,26 +79,17 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.EntityTypeBu
         }
 
         [Fact]
-        public void SetsTenantIdStringMaxLength()
-        {
-            using var db = GetDbContext();
-            var prop = db.Model.FindEntityType(typeof(MyMultiTenantThing))?.FindProperty("TenantId");
-
-            Assert.Equal(Internal.Constants.TenantIdMaxLength, prop!.GetMaxLength());
-        }
-
-        [Fact]
         public void SetGlobalFilterQuery()
         {
             // Doesn't appear to be a way to test this except to try it out...
             var tenant1 = new TenantInfo
             {
-                Id = "abc"
+                Id = abc
             };
 
             var tenant2 = new TenantInfo
             {
-                Id = "123"
+                Id = abc2
             };
 
             using var db = GetDbContext(null, tenant1);
@@ -115,7 +108,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.EntityTypeBu
             // Doesn't appear to be a way to test this except to try it out...
             var tenant1 = new TenantInfo
             {
-                Id = "abc"
+                Id = abc
             };
 
             using var db = GetDbContext(config =>
@@ -137,7 +130,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.EntityTypeBu
         {
             var tenant1 = new TenantInfo
             {
-                Id = "abc",
+                Id = abc,
                 Identifier = "abc",
                 Name = "abc",
                 ConnectionString = "DataSource=testDb.db"
@@ -160,7 +153,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.EntityTypeBu
         {
             var tenant1 = new TenantInfo
             {
-                Id = "abc",
+                Id = abc,
                 Identifier = "abc",
                 Name = "abc",
                 ConnectionString = "DataSource=testDb.db"
@@ -175,7 +168,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.EntityTypeBu
         {
             var tenant1 = new TenantInfo
             {
-                Id = "abc",
+                Id = abc,
                 Identifier = "abc",
                 Name = "abc",
                 ConnectionString = "DataSource=testDb.db"
@@ -199,7 +192,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.EntityTypeBu
         {
             var tenant1 = new TenantInfo
             {
-                Id = "abc",
+                Id = abc,
                 Identifier = "abc",
                 Name = "abc",
                 ConnectionString = "DataSource=testDb.db"

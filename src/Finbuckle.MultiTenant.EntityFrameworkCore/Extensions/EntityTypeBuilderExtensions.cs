@@ -50,9 +50,9 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore
 
             try
             {
-                builder.Property<string>("TenantId")
-                       .IsRequired()
-                       .HasMaxLength(Finbuckle.MultiTenant.Internal.Constants.TenantIdMaxLength);
+                builder.Property<Guid>("TenantId")
+                       .IsRequired();
+                       // .HasMaxLength(Finbuckle.MultiTenant.Internal.Constants.TenantIdMaxLength);
 //                       .HasValueGenerator<TenantIdGenerator>();
             }
             catch (Exception ex)
@@ -60,7 +60,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore
                 throw new MultiTenantException($"{builder.Metadata.ClrType} unable to add TenantId property", ex);
             }
 
-            // build expression tree for e => EF.Property<string>(e, "TenantId") == TenantInfo.Id
+            // build expression tree for e => EF.Property<Guid>(e, "TenantId") == TenantInfo.Id
 
             // where e is one of our entity types
             // will need this ParameterExpression for next step and for final step
@@ -74,9 +74,9 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore
                 entityParamExp = existingQueryFilter.Parameters.First();
             }
 
-            // build up expression tree for: EF.Property<string>(e, "TenantId")
+            // build up expression tree for: EF.Property<Guid>(e, "TenantId")
             var tenantIdExp = Expression.Constant("TenantId", typeof(string));
-            var efPropertyExp = Expression.Call(typeof(EF), nameof(EF.Property), new[] { typeof(string) }, entityParamExp, tenantIdExp);
+            var efPropertyExp = Expression.Call(typeof(EF), nameof(EF.Property), new[] { typeof(Guid) }, entityParamExp, tenantIdExp);
             var leftExp = efPropertyExp;
 
             // build up express tree for: TenantInfo.Id
@@ -87,7 +87,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore
             var contextTenantInfoExp = Expression.Property(contextMemberAccessExp, nameof(IMultiTenantDbContext.TenantInfo));
             var rightExp = Expression.Property(contextTenantInfoExp, nameof(IMultiTenantDbContext.TenantInfo.Id));
 
-            // build expression tree for EF.Property<string>(e, "TenantId") == TenantInfo.Id'
+            // build expression tree for EF.Property<Guid>(e, "TenantId") == TenantInfo.Id'
             var predicate = Expression.Equal(leftExp, rightExp);
 
             // combine with existing filter
@@ -160,7 +160,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore
             }
 
             // Create a new ID and a unique index to replace the old pk.
-            builder.Property<string>("Id").ValueGeneratedOnAdd();
+            builder.Property<Guid>("Id").ValueGeneratedOnAdd();
         }
 
         private static void AddIdentityUserLoginIndex(this EntityTypeBuilder builder)

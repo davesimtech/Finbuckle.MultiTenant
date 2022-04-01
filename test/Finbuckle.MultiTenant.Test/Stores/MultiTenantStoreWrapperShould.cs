@@ -10,6 +10,9 @@ namespace Finbuckle.MultiTenant.Test.Stores
 {
     public class MultiTenantStoreWrappperShould : MultiTenantStoreTestBase
     {
+        private readonly Guid inittechid = Guid.NewGuid();
+        private readonly Guid initechid = Guid.Parse("b2dd86f7-ced4-449f-a514-d216ef7172a8");
+        private readonly Guid initechid2 = Guid.NewGuid();
         // Basic store functionality tested in MultiTenantStoresShould.cs
 
         protected override IMultiTenantStore<TenantInfo> CreateTestStore()
@@ -36,7 +39,7 @@ namespace Finbuckle.MultiTenant.Test.Stores
         {
             var store = CreateTestStore();
 
-            var e = Assert.Throws<AggregateException>(() => store.TryGetAsync(null!).Result);
+            var e = Assert.Throws<AggregateException>(() => store.TryGetAsync(Guid.Empty).Result);
             Assert.IsType<ArgumentNullException>(e.InnerException);
         }
 
@@ -87,7 +90,7 @@ namespace Finbuckle.MultiTenant.Test.Stores
         public void ThrowWhenAddingIfTenantInfoIdentifierIsNull()
         {
             var store = CreateTestStore();
-            var e = Assert.Throws<AggregateException>(() => store.TryAddAsync(new TenantInfo() { Id = "inittech-id" }).Result);
+            var e = Assert.Throws<AggregateException>(() => store.TryAddAsync(new TenantInfo() { Id = inittechid }).Result);
             Assert.IsType<ArgumentNullException>(e.InnerException);
         }
 
@@ -96,7 +99,7 @@ namespace Finbuckle.MultiTenant.Test.Stores
         {
             var store = CreateTestStore();
             // Try to add with duplicate identifier.
-            Assert.False(store.TryAddAsync(new TenantInfo { Id = "initech-id", Identifier = "initech2" }).Result);
+            Assert.False(store.TryAddAsync(new TenantInfo { Id = initechid, Identifier = "initech2" }).Result);
         }
 
         [Fact]
@@ -104,7 +107,7 @@ namespace Finbuckle.MultiTenant.Test.Stores
         {
             var store = CreateTestStore();
             // Try to add with duplicate identifier.
-            Assert.False(store.TryAddAsync(new TenantInfo { Id = "initech-id2", Identifier = "initech" }).Result);
+            Assert.False(store.TryAddAsync(new TenantInfo { Id = initechid2, Identifier = "initech" }).Result);
         }
 
         [Fact]
@@ -130,7 +133,7 @@ namespace Finbuckle.MultiTenant.Test.Stores
         {
             var store = CreateTestStore();
 
-            var result = store.TryUpdateAsync(new TenantInfo{Id = "not-found"}).Result;
+            var result = store.TryUpdateAsync(new TenantInfo{Id = Guid.NewGuid()}).Result;
             Assert.False(result);
         }
 

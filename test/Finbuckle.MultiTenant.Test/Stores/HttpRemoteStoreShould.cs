@@ -18,6 +18,7 @@ namespace Finbuckle.MultiTenant.Test.Stores
     {
         public class TestHandler : DelegatingHandler
         {
+            private readonly Guid initechId = Guid.Parse("b2dd86f7-ced4-449f-a514-d216ef7172a8");
             protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
             {
                 var result = new HttpResponseMessage();
@@ -26,7 +27,7 @@ namespace Finbuckle.MultiTenant.Test.Stores
                 if (string.Equals(request.RequestUri.Segments[numSegments - 1], "initech", StringComparison.OrdinalIgnoreCase))
                 {
 
-                    var tenantInfo = new TenantInfo { Id = "initech-id", Identifier = "initech" };
+                    var tenantInfo = new TenantInfo { Id = initechId, Identifier = "initech" };
                     var json = JsonConvert.SerializeObject(tenantInfo);
                     result.StatusCode = HttpStatusCode.OK;
                     result.Content = new StringContent(json);

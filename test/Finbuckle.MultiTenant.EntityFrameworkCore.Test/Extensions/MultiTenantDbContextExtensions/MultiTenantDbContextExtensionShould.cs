@@ -1,6 +1,7 @@
 // Copyright Finbuckle LLC, Andrew White, and Contributors.
 // Refer to the solution LICENSE file for more inforation.
 
+using System;
 using System.Data.Common;
 using System.Linq;
 using Microsoft.Data.Sqlite;
@@ -11,6 +12,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.MultiTenantD
 {
     public class MultiTenantDbContextExtensionsShould
     {
+        private readonly Guid abc = Guid.NewGuid();
         private readonly DbContextOptions _options;
         private readonly DbConnection _connection;
 
@@ -30,7 +32,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.MultiTenantD
                 _connection.Open();
                 var tenant1 = new TenantInfo
                 {
-                    Id = "abc",
+                    Id = abc,
                     Identifier = "abc",
                     Name = "abc",
                     ConnectionString = "DataSource=TestDb.db"
@@ -46,7 +48,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.MultiTenantD
                     var blog1 = new Blog { Title = "abc" };
                     db.Blogs?.Add(blog1);
                     db.SaveChanges();
-                    Assert.Equal(tenant1.Identifier, db.Entry(blog1).Property("TenantId").CurrentValue);
+                    Assert.Equal(tenant1.Id, db.Entry(blog1).Property("TenantId").CurrentValue);
                 }
 
                 // TenantNotSetMode.Overwrite
@@ -76,7 +78,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.MultiTenantD
                 _connection.Open();
                 var tenant1 = new TenantInfo
                 {
-                    Id = "abc",
+                    Id = abc,
                     Identifier = "abc",
                     Name = "abc",
                     ConnectionString = "DataSource=testdb.db"
@@ -91,7 +93,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.MultiTenantD
 
                     var blog1 = new Blog { Title = "abc" };
                     db.Blogs?.Add(blog1);
-                    db.Entry(blog1).Property("TenantId").CurrentValue = "77";
+                    db.Entry(blog1).Property("TenantId").CurrentValue = Guid.NewGuid();
 
                     Assert.Throws<MultiTenantException>(() => db.SaveChanges());
                 }
@@ -105,9 +107,9 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.MultiTenantD
 
                     var blog1 = new Blog { Title = "34" };
                     db.Blogs?.Add(blog1);
-                    db.Entry(blog1).Property("TenantId").CurrentValue = "34";
+                    db.Entry(blog1).Property("TenantId").CurrentValue = Guid.Parse("34343434-3434-3434-3434-343434343434");
                     db.SaveChanges();
-                    Assert.Equal("34", db.Entry(blog1).Property("TenantId").CurrentValue);
+                    Assert.Equal(Guid.Parse("34343434-3434-3434-3434-343434343434"), db.Entry(blog1).Property("TenantId").CurrentValue);
                 }
 
                 // TenantMismatchMode.Overwrite
@@ -119,7 +121,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.MultiTenantD
 
                     var blog1 = new Blog { Title = "77" };
                     db.Blogs?.Add(blog1);
-                    db.Entry(blog1).Property("TenantId").CurrentValue = "77";
+                    db.Entry(blog1).Property("TenantId").CurrentValue = Guid.Parse("77777777-7777-7777-7777-777777777777");
                     db.SaveChanges();
                     Assert.Equal(tenant1.Id, db.Entry(blog1).Property("TenantId").CurrentValue);
                 }
@@ -138,7 +140,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.MultiTenantD
                 _connection.Open();
                 var tenant1 = new TenantInfo
                 {
-                    Id = "abc",
+                    Id = abc,
                     Identifier = "abc",
                     Name = "abc",
                     ConnectionString = "DataSource=testdb.db"
@@ -155,7 +157,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.MultiTenantD
                     db.SaveChanges();
 
                     db.TenantNotSetMode = TenantNotSetMode.Throw;
-                    db.Entry(blog1).Property("TenantId").CurrentValue = null;
+                    db.Entry(blog1).Property("TenantId").CurrentValue = Guid.Empty;
 
                     Assert.Throws<MultiTenantException>(() => db.SaveChanges());
                 }
@@ -171,7 +173,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.MultiTenantD
                     db.SaveChanges();
 
                     db.TenantNotSetMode = TenantNotSetMode.Overwrite;
-                    db.Entry(blog1).Property("TenantId").CurrentValue = null;
+                    db.Entry(blog1).Property("TenantId").CurrentValue = Guid.Empty;
                     db.SaveChanges();
 
                     Assert.Equal(tenant1.Id, db.Entry(blog1).Property("TenantId").CurrentValue);
@@ -191,7 +193,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.MultiTenantD
                 _connection.Open();
                 var tenant1 = new TenantInfo
                 {
-                    Id = "abc",
+                    Id = abc,
                     Identifier = "abc",
                     Name = "abc",
                     ConnectionString = "DataSource=testdb.db"
@@ -208,7 +210,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.MultiTenantD
                     db.SaveChanges();
 
                     db.TenantMismatchMode = TenantMismatchMode.Throw;
-                    db.Entry(blog1).Property("TenantId").CurrentValue = "11";
+                    db.Entry(blog1).Property("TenantId").CurrentValue = Guid.Parse("11111111-1111-1111-1111-111111111111");
 
                     Assert.Throws<MultiTenantException>(() => db.SaveChanges());
                 }
@@ -224,10 +226,10 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.MultiTenantD
                     db.SaveChanges();
 
                     db.TenantMismatchMode = TenantMismatchMode.Ignore;
-                    db.Entry(blog1).Property("TenantId").CurrentValue = "11";
+                    db.Entry(blog1).Property("TenantId").CurrentValue = Guid.Parse("11111111-1111-1111-1111-111111111111");
                     db.SaveChanges();
 
-                    Assert.Equal("11", db.Entry(blog1).Property("TenantId").CurrentValue);
+                    Assert.Equal(Guid.Parse("11111111-1111-1111-1111-111111111111"), db.Entry(blog1).Property("TenantId").CurrentValue);
                 }
 
                 // TenantMismatchMode.Overwrite
@@ -241,7 +243,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.MultiTenantD
                     db.SaveChanges();
 
                     db.TenantMismatchMode = TenantMismatchMode.Overwrite;
-                    db.Entry(blog1).Property("TenantId").CurrentValue = "11";
+                    db.Entry(blog1).Property("TenantId").CurrentValue = Guid.Parse("11111111-1111-1111-1111-111111111111");
                     db.SaveChanges();
 
                     Assert.Equal(tenant1.Id, db.Entry(blog1).Property("TenantId").CurrentValue);
@@ -261,7 +263,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.MultiTenantD
                 _connection.Open();
                 var tenant1 = new TenantInfo
                 {
-                    Id = "abc",
+                    Id = abc,
                     Identifier = "abc",
                     Name = "abc",
                     ConnectionString = "DataSource=testdb.db"
@@ -278,7 +280,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.MultiTenantD
                     db.SaveChanges();
 
                     db.TenantNotSetMode = TenantNotSetMode.Throw;
-                    db.Entry(blog1).Property("TenantId").CurrentValue = null;
+                    db.Entry(blog1).Property("TenantId").CurrentValue = Guid.Empty;
                     db.Blogs?.Remove(blog1);
 
                     Assert.Throws<MultiTenantException>(() => db.SaveChanges());
@@ -295,7 +297,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.MultiTenantD
                     db.SaveChanges();
 
                     db.TenantNotSetMode = TenantNotSetMode.Overwrite;
-                    db.Entry(blog1).Property("TenantId").CurrentValue = null;
+                    db.Entry(blog1).Property("TenantId").CurrentValue = Guid.Empty;
                     db.Blogs?.Remove(blog1);
 
                     Assert.Equal(1, db.SaveChanges());
@@ -315,7 +317,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.MultiTenantD
                 _connection.Open();
                 var tenant1 = new TenantInfo
                 {
-                    Id = "abc",
+                    Id = abc,
                     Identifier = "abc",
                     Name = "abc",
                     ConnectionString = "DataSource=testdb.db"
@@ -332,7 +334,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.MultiTenantD
                     db.SaveChanges();
 
                     db.TenantMismatchMode = TenantMismatchMode.Throw;
-                    db.Entry(blog1).Property("TenantId").CurrentValue = "17";
+                    db.Entry(blog1).Property("TenantId").CurrentValue = Guid.Parse("17171717-1717-1717-1717-171717171717");
                     db.Blogs?.Remove(blog1);
 
                     Assert.Throws<MultiTenantException>(() => db.SaveChanges());
@@ -343,7 +345,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.MultiTenantD
                 {
                     db.TenantMismatchMode = TenantMismatchMode.Ignore;
                     var blog1 = db.Blogs?.First();
-                    db.Entry(blog1!).Property("TenantId").CurrentValue = "17";
+                    db.Entry(blog1!).Property("TenantId").CurrentValue = Guid.Parse("17171717-1717-1717-1717-171717171717");
                     db.Blogs?.Remove(blog1!);
 
                     Assert.Equal(1, db.SaveChanges());
@@ -360,7 +362,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.MultiTenantD
                     db.SaveChanges();
 
                     db.TenantMismatchMode = TenantMismatchMode.Overwrite;
-                    db.Entry(blog1).Property("TenantId").CurrentValue = "17";
+                    db.Entry(blog1).Property("TenantId").CurrentValue = Guid.Parse("17171717-1717-1717-1717-171717171717");
                     db.Blogs?.Remove(blog1);
 
                     Assert.Equal(1, db.SaveChanges());

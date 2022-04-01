@@ -58,13 +58,6 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Stores
         }
 
         [Fact]
-        public void AddTenantIdLengthConstraint()
-        {
-            var prop = GetModelProperty("Id");
-            Assert.Equal(Internal.Constants.TenantIdMaxLength, prop!.GetMaxLength());
-        }
-
-        [Fact]
         public void AddTenantIdAsKey()
         {
             var prop = GetModelProperty("Id");

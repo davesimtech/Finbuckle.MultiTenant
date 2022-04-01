@@ -5,12 +5,12 @@
     },
     "Tenants": [
       {
-        "Id":  "initech-id",
+        "Id":  "b2dd86f7-ced4-449f-a514-d216ef7172a8",
         "Identifier": "initech",
         "Name": "Initech"
       },
       {
-        "Id": "lol-id",
+        "Id": "0aeee0d0-aa7b-44a2-9314-1e18c05cba1b",
         "Identifier": "lol",
         "Name": "LOL",
         "ConnectionString": "Datasource=lol.db"

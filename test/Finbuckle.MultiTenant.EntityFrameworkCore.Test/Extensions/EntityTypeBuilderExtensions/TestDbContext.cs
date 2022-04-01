@@ -66,7 +66,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.Extensions.EntityTypeBu
     public class MyThingWithTenantId
     {
         public int Id { get; set; }
-        public string? TenantId { get; set; }
+        public Guid TenantId { get; set; }
     }
 
     // ReSharper disable once MemberCanBePrivate.Global

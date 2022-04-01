@@ -12,10 +12,13 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test.Extensions
 {
     public class HttpContextExtensionShould
     {
+        private readonly Guid test = Guid.NewGuid();
+        private readonly Guid tenant2 = Guid.NewGuid();
+        
         [Fact]
         public void GetTenantContextIfExists()
         {
-            var ti = new TenantInfo { Id = "test" };
+            var ti = new TenantInfo { Id = test };
             var tc = new MultiTenantContext<TenantInfo>();
             tc.TenantInfo = ti;
 
@@ -57,7 +60,7 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test.Extensions
             httpContextMock.Setup(c => c.RequestServices).Returns(sp);
             var context = httpContextMock.Object;
 
-            var ti2 = new TenantInfo { Id = "tenant2" };
+            var ti2 = new TenantInfo { Id = tenant2 };
             var res = context.TrySetTenantInfo(ti2, false);
             var mtc = context.GetMultiTenantContext<TenantInfo>();
             Assert.True(res);
@@ -75,7 +78,7 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test.Extensions
             httpContextMock.Setup(c => c.RequestServices).Returns(sp);
             var context = httpContextMock.Object;
 
-            var ti2 = new TenantInfo { Id = "tenant2" };
+            var ti2 = new TenantInfo { Id = tenant2 };
             var res = context.TrySetTenantInfo(ti2, false);
             var mtc = context.GetMultiTenantContext<TenantInfo>();
             var accessor = context.RequestServices.GetRequiredService<IMultiTenantContextAccessor<TenantInfo>>();
@@ -94,7 +97,7 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test.Extensions
             httpContextMock.Setup(c => c.RequestServices).Returns(sp);
             var context = httpContextMock.Object;
 
-            var ti2 = new TenantInfo { Id = "tenant2" };
+            var ti2 = new TenantInfo { Id = tenant2 };
             context.TrySetTenantInfo(ti2, false);
             var mtc = context.GetMultiTenantContext<TenantInfo>();
 
@@ -115,7 +118,7 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test.Extensions
             var sp = services.BuildServiceProvider();
             httpContextMock.Object.RequestServices = sp;
 
-            var ti2 = new TenantInfo { Id = "tenant2" };
+            var ti2 = new TenantInfo { Id = tenant2 };
             httpContextMock.Object.TrySetTenantInfo(ti2, true);
 
             Assert.NotSame(sp, httpContextMock.Object.RequestServices);
@@ -136,7 +139,7 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test.Extensions
             var sp = services.BuildServiceProvider();
             httpContextMock.Object.RequestServices = sp;
 
-            var ti2 = new TenantInfo { Id = "tenant2" };
+            var ti2 = new TenantInfo { Id = tenant2 };
             httpContextMock.Object.TrySetTenantInfo(ti2, false);
 
             Assert.Same(sp, httpContextMock.Object.RequestServices);

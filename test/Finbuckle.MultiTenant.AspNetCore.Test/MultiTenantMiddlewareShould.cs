@@ -1,6 +1,7 @@
 // Copyright Finbuckle LLC, Andrew White, and Contributors.
 // Refer to the solution LICENSE file for more inforation.
 
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,7 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test
 {
     public class MultiTenantMiddlewareShould
     {
+        private readonly Guid initech = Guid.NewGuid();
         [Fact]
         async void UseResolver()
         {
@@ -20,13 +22,13 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test
                 WithInMemoryStore();
             var sp = services.BuildServiceProvider();
             var store = sp.GetService<IMultiTenantStore<TenantInfo>>();
-            store!.TryAddAsync(new TenantInfo { Id = "initech", Identifier = "initech" }).Wait();
+            store!.TryAddAsync(new TenantInfo { Id = initech, Identifier = "initech" }).Wait();
 
             var context = new Mock<HttpContext>();
             context.Setup(c => c.RequestServices).Returns(sp);
 
             var mw = new MultiTenantMiddleware(_ => {
-                Assert.Equal("initech", context.Object.RequestServices.GetService<ITenantInfo>()!.Id);
+                Assert.Equal(initech, context.Object.RequestServices.GetService<ITenantInfo>()!.Id);
                 return Task.CompletedTask;
             });
 
@@ -42,7 +44,7 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test
                 WithInMemoryStore();
             var sp = services.BuildServiceProvider();
             var store = sp.GetService<IMultiTenantStore<TenantInfo>>();
-            store!.TryAddAsync(new TenantInfo { Id = "initech", Identifier = "initech" }).Wait();
+            store!.TryAddAsync(new TenantInfo { Id = initech, Identifier = "initech" }).Wait();
 
             var context = new Mock<HttpContext>();
             context.Setup(c => c.RequestServices).Returns(sp);

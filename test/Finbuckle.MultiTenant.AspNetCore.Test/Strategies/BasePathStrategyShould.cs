@@ -13,6 +13,8 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test.Strategies
 {
     public class BasePathStrategyShould
     {
+        private readonly Guid base123 = Guid.NewGuid();
+        
         private HttpContext CreateHttpContextMock(string path)
         {
             var mock = new Mock<HttpContext>();
@@ -31,7 +33,7 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test.Strategies
             {
                 options.Tenants.Add(new TenantInfo
                 {
-                    Id = "base123",
+                    Id = base123,
                     Identifier = "base",
                     Name = "base tenant"
                 });
@@ -60,7 +62,7 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test.Strategies
             {
                 options.Tenants.Add(new TenantInfo
                 {
-                    Id = "base123",
+                    Id = base123,
                     Identifier = "base",
                     Name = "base tenant"
                 });

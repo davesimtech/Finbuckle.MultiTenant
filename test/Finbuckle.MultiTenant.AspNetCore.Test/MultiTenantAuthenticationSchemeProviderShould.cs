@@ -1,6 +1,7 @@
 // Copyright Finbuckle LLC, Andrew White, and Contributors.
 // Refer to the solution LICENSE file for more inforation.
 
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
@@ -16,6 +17,9 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test
     {
         private static IWebHostBuilder GetTestHostBuilder()
         {
+            Guid tenant1 = Guid.NewGuid();
+            Guid tenant2 = Guid.NewGuid();
+            
             return new WebHostBuilder()
                 .ConfigureServices(services =>
                 {
@@ -47,8 +51,8 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test
                     });
 
                     var store = app.ApplicationServices.GetRequiredService<IMultiTenantStore<TenantInfo>>();
-                    store.TryAddAsync(new TenantInfo { Id = "tenant1", Identifier = "tenant1" }).Wait();
-                    store.TryAddAsync(new TenantInfo { Id = "tenant2", Identifier = "tenant2" }).Wait();
+                    store.TryAddAsync(new TenantInfo { Id = tenant1, Identifier = "tenant1" }).Wait();
+                    store.TryAddAsync(new TenantInfo { Id = tenant2, Identifier = "tenant2" }).Wait();
                 });
         }
 

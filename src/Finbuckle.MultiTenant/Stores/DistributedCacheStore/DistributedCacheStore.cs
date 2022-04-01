@@ -33,7 +33,7 @@ namespace Finbuckle.MultiTenant.Stores
             return true;
         }
 
-        public async Task<TTenantInfo?> TryGetAsync(string id)
+        public async Task<TTenantInfo?> TryGetAsync(Guid id)
         {
             var bytes = await cache.GetStringAsync($"{keyPrefix}id__{id}");
             if (bytes == null)

@@ -27,7 +27,7 @@ namespace Finbuckle.MultiTenant.Stores
             tenantMap = new ConcurrentDictionary<string, TTenantInfo>(stringComparer);
             foreach(var tenant in this.options.Tenants)
             {
-                if(String.IsNullOrWhiteSpace(tenant.Id))
+                if(tenant.Id == Guid.Empty)
                     throw new MultiTenantException("Missing tenant id in options.");
                 if(String.IsNullOrWhiteSpace(tenant.Identifier))
                     throw new MultiTenantException("Missing tenant identifier in options.");
@@ -38,7 +38,7 @@ namespace Finbuckle.MultiTenant.Stores
             }
         }
 
-        public virtual async Task<TTenantInfo?> TryGetAsync(string id)
+        public virtual async Task<TTenantInfo?> TryGetAsync(Guid id)
         {
             var result = tenantMap.Values.Where(ti => ti.Id == id).SingleOrDefault();
 
@@ -73,7 +73,7 @@ namespace Finbuckle.MultiTenant.Stores
 
         public async Task<bool> TryUpdateAsync(TTenantInfo tenantInfo)
         {
-            var existingTenantInfo = tenantInfo.Id != null ? await TryGetAsync(tenantInfo.Id) : null;
+            var existingTenantInfo = tenantInfo.Id != Guid.Empty ? await TryGetAsync(tenantInfo.Id) : null;
 
             if (existingTenantInfo?.Identifier != null)
             {

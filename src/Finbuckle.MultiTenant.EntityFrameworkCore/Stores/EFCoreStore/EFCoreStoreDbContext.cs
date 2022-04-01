@@ -18,7 +18,7 @@ namespace Finbuckle.MultiTenant.Stores
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TTenantInfo>().HasKey(ti => ti.Id);
-            modelBuilder.Entity<TTenantInfo>().Property(ti => ti.Id).HasMaxLength(Constants.TenantIdMaxLength);
+            modelBuilder.Entity<TTenantInfo>().Property(ti => ti.Id);
             modelBuilder.Entity<TTenantInfo>().HasIndex(ti => ti.Identifier).IsUnique();
         }
     }

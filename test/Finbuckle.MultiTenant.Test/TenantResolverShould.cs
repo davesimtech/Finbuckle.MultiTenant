@@ -78,7 +78,7 @@ namespace Finbuckle.MultiTenant.Test
                 WithConfigurationStore();
             var sp = services.BuildServiceProvider();
             sp.GetServices<IMultiTenantStore<TenantInfo>>().
-                Single(i => i.GetType() == typeof(InMemoryStore<TenantInfo>)).TryAddAsync(new TenantInfo { Id = "null", Identifier = "null" }).Wait();
+                Single(i => i.GetType() == typeof(InMemoryStore<TenantInfo>)).TryAddAsync(new TenantInfo { Id = Guid.Empty, Identifier = "null" }).Wait();
 
             var resolver = sp.GetRequiredService<ITenantResolver<TenantInfo>>();
             var result = resolver.ResolveAsync(new object()).Result;
@@ -152,7 +152,7 @@ namespace Finbuckle.MultiTenant.Test
                 WithConfigurationStore();
             var sp = services.BuildServiceProvider();
             sp.GetServices<IMultiTenantStore<TenantInfo>>().
-                Single(i => i.GetType() == typeof(InMemoryStore<TenantInfo>)).TryAddAsync(new TenantInfo { Id = "null", Identifier = "null" }).Wait();
+                Single(i => i.GetType() == typeof(InMemoryStore<TenantInfo>)).TryAddAsync(new TenantInfo { Id = Guid.Empty, Identifier = "null" }).Wait();
 
             var resolver = sp.GetRequiredService<ITenantResolver<TenantInfo>>();
             var result = resolver.ResolveAsync(new object()).Result;
@@ -179,7 +179,7 @@ namespace Finbuckle.MultiTenant.Test
                 WithConfigurationStore();
             var sp = services.BuildServiceProvider();
             sp.GetServices<IMultiTenantStore<TenantInfo>>().
-                Single(i => i.GetType() == typeof(InMemoryStore<TenantInfo>)).TryAddAsync(new TenantInfo { Id = "null", Identifier = "null" }).Wait();
+                Single(i => i.GetType() == typeof(InMemoryStore<TenantInfo>)).TryAddAsync(new TenantInfo { Id = Guid.Empty, Identifier = "null" }).Wait();
 
             var resolver = sp.GetRequiredService<ITenantResolver<TenantInfo>>();
             var result = resolver.ResolveAsync(new object()).Result;
@@ -206,7 +206,7 @@ namespace Finbuckle.MultiTenant.Test
             var sp = services.BuildServiceProvider();
             sp.
                 GetServices<IMultiTenantStore<TenantInfo>>().
-                Single(i => i.GetType() == typeof(InMemoryStore<TenantInfo>)).TryAddAsync(new TenantInfo { Id = "null", Identifier = "null" }).Wait();
+                Single(i => i.GetType() == typeof(InMemoryStore<TenantInfo>)).TryAddAsync(new TenantInfo { Id = Guid.Empty, Identifier = "null" }).Wait();
 
             var resolver = sp.GetRequiredService<ITenantResolver<TenantInfo>>();
             var result = resolver.ResolveAsync(new object()).Result;

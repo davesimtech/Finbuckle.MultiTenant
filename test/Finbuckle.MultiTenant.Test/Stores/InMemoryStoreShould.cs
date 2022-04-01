@@ -1,6 +1,7 @@
 // Copyright Finbuckle LLC, Andrew White, and Contributors.
 // Refer to the solution LICENSE file for more inforation.
 
+using System;
 using Finbuckle.MultiTenant.Stores;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -10,6 +11,8 @@ namespace Finbuckle.MultiTenant.Test.Stores
 {
     public class InMemoryStoreShould : MultiTenantStoreTestBase
     {
+        private readonly Guid initechId = Guid.Parse("b2dd86f7-ced4-449f-a514-d216ef7172a8");
+        private readonly Guid lol = Guid.NewGuid();
         private IMultiTenantStore<TenantInfo> CreateCaseSensitiveTestStore()
         {
             var services = new ServiceCollection();
@@ -20,13 +23,13 @@ namespace Finbuckle.MultiTenant.Test.Stores
 
             var ti1 = new TenantInfo
             {
-                Id = "initech",
+                Id = initechId,
                 Identifier = "initech",
                 Name = "initech"
             };
             var ti2 = new TenantInfo
             {
-                Id = "lol",
+                Id =lol,
                 Identifier = "lol",
                 Name = "lol"
             };
@@ -57,13 +60,13 @@ namespace Finbuckle.MultiTenant.Test.Stores
             var store = CreateCaseSensitiveTestStore();
             var ti1 = new TenantInfo
             {
-                Id = "initech",
+                Id = initechId,
                 Identifier = "initech",
                 Name = "initech"
             };
             var ti2 = new TenantInfo
             {
-                Id = "iNiTEch",
+                Id = initechId,
                 Identifier = "iNiTEch",
                 Name = "Initech"
             };
@@ -77,7 +80,7 @@ namespace Finbuckle.MultiTenant.Test.Stores
             var store = CreateCaseSensitiveTestStore();
             var ti = new TenantInfo
             {
-                Id = "NullTenant",
+                Id = Guid.Empty,
                 Name = "NullTenant"
             };
 
@@ -90,8 +93,8 @@ namespace Finbuckle.MultiTenant.Test.Stores
             var services = new ServiceCollection();
             services.AddOptions().Configure<InMemoryStoreOptions<TenantInfo>>(options =>
             {
-                options.Tenants.Add(new TenantInfo { Id = "lol", Identifier = "lol", Name = "LOL", ConnectionString = "Datasource=lol.db" });
-                options.Tenants.Add(new TenantInfo { Id = "lol", Identifier = "lol", Name = "LOL", ConnectionString = "Datasource=lol.db" });
+                options.Tenants.Add(new TenantInfo { Id = lol, Identifier = "lol", Name = "LOL", ConnectionString = "Datasource=lol.db" });
+                options.Tenants.Add(new TenantInfo { Id = lol, Identifier = "lol", Name = "LOL", ConnectionString = "Datasource=lol.db" });
             });
             var sp = services.BuildServiceProvider();
 
@@ -99,15 +102,16 @@ namespace Finbuckle.MultiTenant.Test.Stores
         }
 
         [Theory]
-        [InlineData("", "")]
-        [InlineData(null, null)]
-        [InlineData("", null)]
-        [InlineData("a", "")]
-        [InlineData("a", null)]
-        [InlineData("", "a")]
-        [InlineData(null, "a")]
-        public void ThrowIfMissingIdOrIdentifierInOptionsTenants(string id, string identifier)
+        [InlineData("00000000-0000-0000-0000-000000000000", "")]
+        [InlineData("00000000-0000-0000-0000-000000000000", null)]
+        [InlineData("00000000-0000-0000-0000-000000000000", null)]
+        [InlineData("c990a9d7-f001-4233-82e4-aa5bcd37185b", "")]
+        [InlineData("c990a9d7-f001-4233-82e4-aa5bcd37185b", null)]
+        [InlineData("00000000-0000-0000-0000-000000000000", "a")]
+        [InlineData("00000000-0000-0000-0000-000000000000", "a")]
+        public void ThrowIfMissingIdOrIdentifierInOptionsTenants(string idString, string identifier)
         {
+            var id = Guid.Parse(idString);
             var services = new ServiceCollection();
             services.AddOptions().Configure<InMemoryStoreOptions<TenantInfo>>(options =>
             {

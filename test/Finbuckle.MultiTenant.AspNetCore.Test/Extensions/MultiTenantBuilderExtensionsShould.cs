@@ -23,7 +23,7 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test.Extensions
     {
         public class TestTenantInfo : ITenantInfo
         {
-            public string? Id { get; set; }
+            public Guid Id { get; set; }
             public string? Identifier { get; set; }
             public string? Name { get; set; }
             public string? ConnectionString { get; set; }
@@ -326,7 +326,7 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test.Extensions
 
             var ti1 = new TestTenantInfo
             {
-                Id = "id1",
+                Id = Guid.Parse("c0ae0ac2-5407-462b-8536-96f6f87dbbc8"),
                 Identifier = "identifier1",
                 ChallengeScheme = "customScheme"
             };
@@ -350,7 +350,7 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test.Extensions
 
             var ti1 = new TestTenantInfo
             {
-                Id = "id1",
+                Id = Guid.Parse("c0ae0ac2-5407-462b-8536-96f6f87dbbc8"),
                 Identifier = "identifier1",
                 ChallengeScheme = "customScheme"
             };
@@ -374,7 +374,7 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test.Extensions
 
             var ti1 = new TestTenantInfo
             {
-                Id = "id1",
+                Id = Guid.Parse("c0ae0ac2-5407-462b-8536-96f6f87dbbc8"),
                 Identifier = "identifier1",
                 OpenIdConnectAuthority = "https://tenant",
                 OpenIdConnectClientId = "tenant",
@@ -403,7 +403,7 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test.Extensions
 
             var ti1 = new TestTenantInfo
             {
-                Id = "id1",
+                Id = Guid.Parse("c0ae0ac2-5407-462b-8536-96f6f87dbbc8"),
                 Identifier = "identifier1",
                 OpenIdConnectAuthority = "https://tenant",
                 OpenIdConnectClientId = "tenant",
@@ -432,7 +432,7 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test.Extensions
 
             var ti1 = new TestTenantInfo
             {
-                Id = "id1",
+                Id = Guid.Parse("c0ae0ac2-5407-462b-8536-96f6f87dbbc8"),
                 Identifier = "identifier1",
                 CookieLoginPath = "/path1",
                 CookieLogoutPath = "/path2",
@@ -461,7 +461,7 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test.Extensions
 
             var ti1 = new TestTenantInfo
             {
-                Id = "id1",
+                Id = Guid.Parse("c0ae0ac2-5407-462b-8536-96f6f87dbbc8"),
                 Identifier = "identifier1",
                 CookieLoginPath = "/path1",
                 CookieLogoutPath = "/path2",

@@ -301,7 +301,7 @@ namespace Finbuckle.MultiTenant.Test.DependencyInjection
                 throw new NotImplementedException();
             }
 
-            public Task<TTenant?> TryGetAsync(string id)
+            public Task<TTenant?> TryGetAsync(Guid id)
             {
                 throw new NotImplementedException();
             }

@@ -10,12 +10,14 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.MultiTenantIdentityDbCo
 {
     public class MultiTenantIdentityDbContextShould
     {
+        private readonly Guid abc = Guid.NewGuid();
+        
         [Fact]
         public void WorkWithSingleParamCtor()
         {
             var tenant1 = new TenantInfo
             {
-                Id = "abc",
+                Id = abc,
                 Identifier = "abc",
                 Name = "abc",
                 ConnectionString = "DataSource=testDb.db"
@@ -37,7 +39,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.MultiTenantIdentityDbCo
         {
             var tenant1 = new TenantInfo
             {
-                Id = "abc",
+                Id = abc,
                 Identifier = "abc",
                 Name = "abc",
                 ConnectionString = "DataSource=testDb.db"
@@ -59,7 +61,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.MultiTenantIdentityDbCo
         {
             var tenant1 = new TenantInfo
             {
-                Id = "abc",
+                Id = abc,
                 Identifier = "abc",
                 Name = "abc",
                 ConnectionString = "DataSource=testDb.db"
@@ -81,7 +83,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.MultiTenantIdentityDbCo
         {
             var tenant1 = new TenantInfo
             {
-                Id = "abc",
+                Id = abc,
                 Identifier = "abc",
                 Name = "abc",
                 ConnectionString = "DataSource=testDb.db"
@@ -103,7 +105,7 @@ namespace Finbuckle.MultiTenant.EntityFrameworkCore.Test.MultiTenantIdentityDbCo
         {
             var tenant1 = new TenantInfo
             {
-                Id = "abc",
+                Id = abc,
                 Identifier = "abc",
                 Name = "abc",
                 ConnectionString = "DataSource=testDb.db"

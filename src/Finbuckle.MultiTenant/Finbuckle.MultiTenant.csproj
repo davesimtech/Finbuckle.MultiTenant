@@ -5,6 +5,8 @@
         <Title>Finbuckle.MultiTenant</Title>
         <Description>Main library package for Finbuckle.MultiTenant.</Description>
         <Nullable>enable</Nullable>
+        <AssemblyName>Finbuckle.MultiTenant.Guid</AssemblyName>
+        <RootNamespace>Finbuckle.MultiTenant.Guid</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

@@ -2,9 +2,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net6.0;net5.0;netcoreapp3.1</TargetFrameworks>
-    <Title>Finbuckle.MultiTenant.AspNetCore</Title>
+    <Title>Finbuckle.MultiTenant.Guid.AspNetCore</Title>
     <Description>ASP.NET Core support for Finbuckle.MultiTenant.</Description>
     <Nullable>enable</Nullable>
+    <PackageId>Finbuckle.MultiTenant.Guid.AspNetCore</PackageId>
   </PropertyGroup>
 
   <ItemGroup>

@@ -20,7 +20,7 @@ jobs:
           NUGET_AUTH_TOKEN: ${{ secrets.AZURE_PAT }}
           
       - name: Create the package
-        run: dotnet test -c Release && dotnet pack --no-build -c Release --output nupkgs
+        run: dotnet test -c Release && dotnet pack -c Release --output nupkgs
         
       - name: Publish the package to NuGet.org
         env:

@@ -53,11 +53,11 @@ namespace Finbuckle.MultiTenant.Test.Extensions
             var services = new ServiceCollection();
             services.AddMultiTenant<TenantInfo>();
 
-            var service = services.SingleOrDefault(s => s.Lifetime == ServiceLifetime.Transient &&
+            var service = services.SingleOrDefault(s => s.Lifetime == ServiceLifetime.Scoped &&
                                                         s.ServiceType == typeof(TenantInfo));
 
             Assert.NotNull(service);
-            Assert.Equal(ServiceLifetime.Transient, service!.Lifetime);
+            Assert.Equal(ServiceLifetime.Scoped, service!.Lifetime);
         }
 
         [Fact]
@@ -66,11 +66,11 @@ namespace Finbuckle.MultiTenant.Test.Extensions
             var services = new ServiceCollection();
             services.AddMultiTenant<TenantInfo>();
 
-            var service = services.SingleOrDefault(s => s.Lifetime == ServiceLifetime.Transient &&
+            var service = services.SingleOrDefault(s => s.Lifetime == ServiceLifetime.Scoped &&
                                                         s.ServiceType == typeof(ITenantInfo));
 
             Assert.NotNull(service);
-            Assert.Equal(ServiceLifetime.Transient, service!.Lifetime);
+            Assert.Equal(ServiceLifetime.Scoped, service!.Lifetime);
         }
 
         [Fact]

@@ -13,14 +13,15 @@ jobs:
       
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '7.0.x'
+          include-prerelease: true
           source-url: ${{ env.AZURE_ARTIFACTS_FEED_URL }}
         env:
           DOTNET_INSTALL_DIR: /usr/share/dotnet
           NUGET_AUTH_TOKEN: ${{ secrets.AZURE_PAT }}
           
       - name: Create the package
-        run: dotnet test -c Release && dotnet pack -c Release --output nupkgs
+        run: dotnet test -f net6.0 -c Release && dotnet pack -c Release --output nupkgs
         
       - name: Publish the package to NuGet.org
         env:

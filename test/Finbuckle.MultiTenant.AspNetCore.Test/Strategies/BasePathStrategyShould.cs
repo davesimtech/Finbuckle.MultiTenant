@@ -104,7 +104,7 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test.Strategies
             var context = new Object();
             var strategy = new BasePathStrategy();
 
-            Assert.Throws<AggregateException>(() => strategy.GetIdentifierAsync(context).Result);
+            Assert.Throws<Finbuckle.MultiTenant.MultiTenantException>(() => strategy.GetIdentifierAsync(context).Result);
         }
     }
 }

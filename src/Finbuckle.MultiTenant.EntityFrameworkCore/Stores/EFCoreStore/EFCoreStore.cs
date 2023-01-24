@@ -20,7 +20,7 @@ namespace Finbuckle.MultiTenant.Stores
             this.dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
-        public async Task<TTenantInfo?> TryGetAsync(Guid id)
+        public virtual async Task<TTenantInfo?> TryGetAsync(Guid id)
         {
             return await dbContext.TenantInfo
                             .Where(ti => ti.Id == id)

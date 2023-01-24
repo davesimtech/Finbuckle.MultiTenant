@@ -22,6 +22,7 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test.Extensions
 {
     public class MultiTenantBuilderExtensionsShould
     {
+        private Guid _tenantId = Guid.Parse("c0ae0ac2-5407-462b-8536-96f6f87dbbc8");
         private class TestTenantInfo : ITenantInfo
         {
             public Guid Id { get; set; }
@@ -404,7 +405,7 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test.Extensions
 
             var ti1 = new TenantInfo
             {
-                Id = "id1",
+                Id = _tenantId,
                 Identifier = "identifier1"
             };
 
@@ -496,7 +497,7 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test.Extensions
 
             var ti1 = new TenantInfo
             {
-                Id = "id1",
+                Id = _tenantId,
                 Identifier = "identifier1"
             };
 
@@ -587,7 +588,7 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test.Extensions
 
             var ti1 = new TenantInfo
             {
-                Id = "id1",
+                Id = _tenantId,
                 Identifier = "identifier1"
             };
 

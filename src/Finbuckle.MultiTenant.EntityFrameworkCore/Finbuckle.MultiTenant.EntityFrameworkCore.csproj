@@ -22,9 +22,9 @@
     </When>
     <When Condition=" '$(TargetFramework)' == 'net6.0' ">
       <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.13" />
+        <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.13" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.13" />
       </ItemGroup>
     </When>
     <When Condition=" '$(TargetFramework)' == 'netstandard2.1' ">

@@ -20,8 +20,8 @@
     </When>
     <When Condition=" '$(TargetFramework)' == 'net6.0' ">
       <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.8" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.13" />
+        <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.13" />
       </ItemGroup>
     </When>
     <When Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">

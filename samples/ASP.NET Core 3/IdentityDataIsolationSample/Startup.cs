@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Routing;
 using Finbuckle.Utilities.AspNetCore;
 using System.Collections.Generic;
+using Microsoft.Extensions.Hosting;
 
 namespace IdentityDataIsolationSample
 {
@@ -59,7 +60,7 @@ namespace IdentityDataIsolationSample
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.EnvironmentName == "Development")
+            if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseStatusCodePages();

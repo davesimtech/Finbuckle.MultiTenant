@@ -1,12 +1,12 @@
-# What's New in Finbuckle.MultiTenant <span class="_version">6.7.1</span>
+# What's New in Finbuckle.MultiTenant <span class="_version">6.9.1</span>
 
 <!--_release-notes-->
-### [6.7.1](https://github.com/Finbuckle/Finbuckle.MultiTenant/compare/v6.7.0...v6.7.1) (2022-03-10)
+## [6.9.1](https://github.com/Finbuckle/Finbuckle.MultiTenant/compare/v6.9.0...v6.9.1) (2022-11-10)
 
 
 ### Bug Fixes
 
-* use web System.Text.Json setttings and update samples ([#544](https://github.com/Finbuckle/Finbuckle.MultiTenant/issues/544)) ([266e806](https://github.com/Finbuckle/Finbuckle.MultiTenant/commit/266e806964af9b70daa7d1ed93b6b5a96c50ae5d))
+* update for final .NET 7 release ([#610](https://github.com/Finbuckle/Finbuckle.MultiTenant/issues/610)) ([ac32e7d](https://github.com/Finbuckle/Finbuckle.MultiTenant/commit/ac32e7dbb9b2bb7315e4787234677e1643ef0118))
 
 
 <!--_release-notes-->

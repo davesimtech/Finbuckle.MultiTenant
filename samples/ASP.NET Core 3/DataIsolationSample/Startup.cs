@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace DataIsolationSample
 {
@@ -35,7 +36,7 @@ namespace DataIsolationSample
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.EnvironmentName == "Development")
+            if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }

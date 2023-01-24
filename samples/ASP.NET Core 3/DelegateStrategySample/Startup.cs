@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Primitives;
 
 namespace DelegateStrategySample
@@ -36,7 +37,7 @@ namespace DelegateStrategySample
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.EnvironmentName == "Development")
+            if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }

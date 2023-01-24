@@ -1,3 +1,64 @@
+## [6.9.1](https://github.com/Finbuckle/Finbuckle.MultiTenant/compare/v6.9.0...v6.9.1) (2022-11-10)
+
+
+### Bug Fixes
+
+* update for final .NET 7 release ([#610](https://github.com/Finbuckle/Finbuckle.MultiTenant/issues/610)) ([ac32e7d](https://github.com/Finbuckle/Finbuckle.MultiTenant/commit/ac32e7dbb9b2bb7315e4787234677e1643ef0118))
+
+## [6.9.0](https://github.com/Finbuckle/Finbuckle.MultiTenant/compare/v6.8.1...v6.9.0) (2022-10-23)
+
+
+### Features
+
+* .net7.0 support ([#604](https://github.com/Finbuckle/Finbuckle.MultiTenant/issues/604)) ([4d7d54d](https://github.com/Finbuckle/Finbuckle.MultiTenant/commit/4d7d54d928ecc22b7cc7d7de50223400b00c9f10))
+
+
+### Bug Fixes
+
+* BasePathStrategy combine path bug ([0628b0f](https://github.com/Finbuckle/Finbuckle.MultiTenant/commit/0628b0f3d27d4a975cf862b8477cec73a29080b2))
+
+## [6.8.1](https://github.com/Finbuckle/Finbuckle.MultiTenant/compare/v6.8.0...v6.8.1) (2022-09-17)
+
+
+### Bug Fixes
+
+* XML comment and generation fix ([#588](https://github.com/Finbuckle/Finbuckle.MultiTenant/issues/588)) ([c1de82d](https://github.com/Finbuckle/Finbuckle.MultiTenant/commit/c1de82dc9405830ae92ec331b81048a4b485e17b))
+
+## [6.8.0](https://github.com/Finbuckle/Finbuckle.MultiTenant/compare/v6.7.3...v6.8.0) (2022-08-28)
+
+
+### Features
+
+* opened efcorestore to allow overriding methods ([#577](https://github.com/Finbuckle/Finbuckle.MultiTenant/issues/577)) ([7dac251](https://github.com/Finbuckle/Finbuckle.MultiTenant/commit/7dac251b39cbaf62a5329f71b920fac2288c1ec6)), closes [#574](https://github.com/Finbuckle/Finbuckle.MultiTenant/issues/574)
+
+
+### Bug Fixes
+
+* add missing using statement to samples ([#581](https://github.com/Finbuckle/Finbuckle.MultiTenant/issues/581)) ([ec8e08e](https://github.com/Finbuckle/Finbuckle.MultiTenant/commit/ec8e08e2bc99a85d28fc8be4aa34070f8eae4437))
+* adjust logic in per-tenant-authentication conventions ([e78a26f](https://github.com/Finbuckle/Finbuckle.MultiTenant/commit/e78a26fe1d3fa89b5ece8ecabcb2bce2f7a749ab))
+* environment configuration in samples ([#579](https://github.com/Finbuckle/Finbuckle.MultiTenant/issues/579)) ([6df8827](https://github.com/Finbuckle/Finbuckle.MultiTenant/commit/6df882786c656108ffd4f0450c7c4fcb45cfe3fb))
+* update authentication.md ([#573](https://github.com/Finbuckle/Finbuckle.MultiTenant/issues/573)) ([df55b24](https://github.com/Finbuckle/Finbuckle.MultiTenant/commit/df55b24668642dfca235071abdbf7b369c2b3a85))
+
+## [6.7.3](https://github.com/Finbuckle/Finbuckle.MultiTenant/compare/v6.7.2...v6.7.3) (2022-07-17)
+
+
+### Bug Fixes
+
+* drop .net 5.0 target ([#569](https://github.com/Finbuckle/Finbuckle.MultiTenant/issues/569)) ([38fa9e1](https://github.com/Finbuckle/Finbuckle.MultiTenant/commit/38fa9e1cac660822f091c3e71b1746803394308f))
+* remove reliance on uncaught exceptions ([#563](https://github.com/Finbuckle/Finbuckle.MultiTenant/issues/563)) ([a675684](https://github.com/Finbuckle/Finbuckle.MultiTenant/commit/a6756842b0558b19d620f9dcd049e30841841406))
+
+
+### Performance Improvements
+
+* corrected various async/await code ([#557](https://github.com/Finbuckle/Finbuckle.MultiTenant/issues/557)) ([fe7c01b](https://github.com/Finbuckle/Finbuckle.MultiTenant/commit/fe7c01b66336e83ef5f1f108f9c3a92861135d54))
+
+### [6.7.2](https://github.com/Finbuckle/Finbuckle.MultiTenant/compare/v6.7.1...v6.7.2) (2022-04-05)
+
+
+### Bug Fixes
+
+* update scheme provider to support decorator pattern ([#551](https://github.com/Finbuckle/Finbuckle.MultiTenant/issues/551)) ([ead052a](https://github.com/Finbuckle/Finbuckle.MultiTenant/commit/ead052a45bdb414b26c0373262e9eff0b472e305))
+
 ### [6.7.1](https://github.com/Finbuckle/Finbuckle.MultiTenant/compare/v6.7.0...v6.7.1) (2022-03-10)
 
 

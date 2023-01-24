@@ -14,7 +14,7 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test
     {
         private readonly Guid initech = Guid.NewGuid();
         [Fact]
-        async void UseResolver()
+        public async void UseResolver()
         {
             var services = new ServiceCollection();
             services.AddMultiTenant<TenantInfo>().
@@ -36,7 +36,7 @@ namespace Finbuckle.MultiTenant.AspNetCore.Test
         }
 
         [Fact]
-        async void SetMultiTenantContextAccessor()
+        public async void SetMultiTenantContextAccessor()
         {
             var services = new ServiceCollection();
             services.AddMultiTenant<TenantInfo>().
